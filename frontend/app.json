@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Closira",
+    "slug": "closira-dashboard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#534AB7"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.closira.dashboard"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#534AB7"
+      },
+      "package": "com.closira.dashboard"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}   

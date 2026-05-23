@@ -1,0 +1,110 @@
+### Closira API — Test Requests
+### Use with VS Code REST Client or IntelliJ HTTP Client
+
+@base = http://localhost:8000
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. Health Check
+# ─────────────────────────────────────────────────────────────────────────────
+
+GET {{base}}/health
+Accept: application/json
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. Create Enquiry — WhatsApp / booking
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "whatsapp",
+  "customer_name": "Sarah M.",
+  "message": "Hi, I'd like to book an appointment for next Monday morning please."
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. Create Enquiry — Email / pricing
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "email",
+  "customer_name": "Ravi K.",
+  "message": "Hello, could you send me your pricing and packages? What is the cost for the premium plan?"
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. Create Enquiry — Call / complaint (will be escalated)
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "call",
+  "customer_name": "Priya S.",
+  "message": "I am very unhappy and dissatisfied with your service. This is terrible. I want a refund."
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. Create Enquiry — unmatched (triggers auto-escalation)
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "whatsapp",
+  "customer_name": "Unknown User",
+  "message": "xyzzy quux blort fnord"
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. Get Enquiry History
+#    Replace <ENQUIRY_ID> with a job_id from the create response above
+# ─────────────────────────────────────────────────────────────────────────────
+
+GET {{base}}/enquiry/<ENQUIRY_ID>/history
+Accept: application/json
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. Schedule a Follow-up
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry/<ENQUIRY_ID>/followup
+Content-Type: application/json
+
+{
+  "delay_minutes": 30,
+  "message_template": "Hi {customer_name}, just following up on your recent enquiry — can we help further?"
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. Escalate an Enquiry
+# ─────────────────────────────────────────────────────────────────────────────
+
+POST {{base}}/enquiry/<ENQUIRY_ID>/escalate
+Content-Type: application/json
+
+{
+  "reason": "Customer requested to speak directly with a senior manager."
+}
+
+###
